@@ -1,5 +1,5 @@
 import tempfile
-import os.path
+import os
 
 
 class File:
@@ -13,12 +13,18 @@ class File:
     def __str__(self):
         return self.path
 
-    def __readFromPath(self, path):
+    def read(self, path):
         with open(path, "r") as f:
             return f.read()
-    
+
+    def __iter__(self):
+        with open(self.path, "r") as f:
+            return iter(f.readlines())
+
     def __add__(self, obj):
-        with open(path.join(tempfile.gettempdir(), path.join(self.path, obj.path)), "w+") as tf:
-            tf.write(self.__readFromPath(self.path))
-            tf.write(self.__readFromPath(obj.path))
-        
+        path = os.path.join(tempfile.gettempdir(), os.path.basename(self.path) + os.path.basename(obj.path))
+        with open(path, "w+") as tf:
+            f1 = self.read(self.path)
+            f2 = self.read(obj.path)
+            tf.write(f1 + f2)
+        return File(path)
