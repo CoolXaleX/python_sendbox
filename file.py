@@ -5,6 +5,7 @@ import os
 class File:
     def __init__(self, path):
         self.path = path
+        self.current_position = 0
 
     def write(self, string):
         with open(self.path, "w+") as f:
@@ -18,8 +19,19 @@ class File:
             return f.read()
 
     def __iter__(self):
-        with open(self.path, "r") as f:
-            return iter(f.readlines())
+        return self
+
+    def __next__(self):
+        with open(self.path, 'r') as f:
+            f.seek(self.current_position)
+
+            line = f.readline()
+            if not line:
+                self.current_position = 0
+                raise StopIteration('EOF')
+
+            self.current_position = f.tell()
+            return line
 
     def __add__(self, obj):
         path = os.path.join(tempfile.gettempdir(), os.path.basename(self.path) + os.path.basename(obj.path))
