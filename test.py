@@ -12,22 +12,34 @@
 # file3 = file1 + file2
 # for f in file3:
 #     print(f)
-from value import Value
+# from value import Value
+#
+#
+# class Account:
+#     amount = Value()
+#
+#     def __init__(self, commission):
+#         self.commission = commission
+#
+#     def _get_commission(self):
+#         return self.commission
+#
+#
+# new_account = Account(0.1)
+#
+#
+# for i in range(0, 110, 10):
+#     new_account.amount = i
+#     print(str(i) + " " + str(new_account.amount))
+from client import Client
+client = Client("127.0.0.1", 10001)
+print(client.put("palm.cpu", 0.5, timestamp=1150864247))
+print(client.put("palm.cpu", 2.0, timestamp=1150864248))
+print(client.put("palm.cpu", 0.5, timestamp=1150864248))
 
+print(client.put("eardrum.cpu", 3, timestamp=1150864250))
+print(client.put("eardrum.cpu", 4, timestamp=1150864251))
+print(client.put("eardrum.memory", 4200000))
 
-class Account:
-    amount = Value()
+print(client.get("*"))
 
-    def __init__(self, commission):
-        self.commission = commission
-
-    def _get_commission(self):
-        return self.commission
-
-
-new_account = Account(0.1)
-
-
-for i in range(0, 110, 10):
-    new_account.amount = i
-    print(str(i) + " " + str(new_account.amount))
